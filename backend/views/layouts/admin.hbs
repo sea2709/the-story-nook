@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Story Nook — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css">
+  <script src="https://unpkg.com/htmx.org@2.0.4" defer></script>
+</head>
+<body>
+  {{{body}}}
+
+  <div id="modal-container"></div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('show'), 3200);
+    }
+
+    document.body.addEventListener('showToast',       e => showToast(e.detail.value));
+    document.body.addEventListener('bookListUpdated', () => htmx.ajax('GET', '/admin/books', { target: '#book-list', swap: 'innerHTML' }));
+    document.body.addEventListener('bookReady', e => {
+      htmx.ajax('GET', `/admin/books/${e.detail.value}/preview`, { target: '#preview-area', swap: 'innerHTML' });
+      htmx.ajax('GET', '/admin/books', { target: '#book-list', swap: 'innerHTML' });
+      activateTab('pv');
+    });
+
+    function activateTab(name) {
+      document.querySelectorAll('[data-tab]').forEach(t => t.classList.toggle('act', t.dataset.tab === name));
+      document.querySelectorAll('.tc').forEach(t => t.classList.toggle('act', t.id === 'tc-' + name));
+    }
+
+    document.addEventListener('click', e => {
+      const tabEl = e.target.closest('[data-tab]');
+      if (tabEl) {
+        activateTab(tabEl.dataset.tab);
+        return;
+      }
+      // Inline text edit toggle
+      const editBtn = e.target.closest('[data-edit-side]');
+      if (editBtn) {
+        const s = editBtn.dataset.editSide;
+        document.getElementById('pvtd-' + s).style.display = 'none';
+        document.getElementById('pvte-' + s).style.display = 'block';
+        const ta = document.getElementById('pvta-' + s);
+        if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+        return;
+      }
+      const cancelBtn = e.target.closest('[data-cancel-side]');
+      if (cancelBtn) {
+        const s = cancelBtn.dataset.cancelSide;
+        document.getElementById('pvtd-' + s).style.display = 'block';
+        document.getElementById('pvte-' + s).style.display = 'none';
+        return;
+      }
+      // Close modal on backdrop click
+      if (e.target.classList.contains('mbk')) e.target.classList.remove('open');
+    });
+
+    // After text save, HTMX swaps the spread — reset edit state
+    document.body.addEventListener('htmx:afterSwap', e => {
+      ['l', 'r'].forEach(s => {
+        const d = document.getElementById('pvtd-' + s);
+        const ed = document.getElementById('pvte-' + s);
+        if (d && ed) { d.style.display = 'block'; ed.style.display = 'none'; }
+      });
+    });
+  </script>
+</body>
+</html>

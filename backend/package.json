@@ -1,0 +1,24 @@
+{
+  "name": "picture-books-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently \"nodemon server.js\" \"tailwindcss -i tailwind.input.css -o public/css/admin.css --watch\"",
+    "build:css": "tailwindcss -i tailwind.input.css -o public/css/admin.css --minify",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.51.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.19.0",
+    "express-handlebars": "^7.1.0",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "concurrently": "^9.0.0",
+    "nodemon": "^3.0.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

@@ -1,0 +1,20 @@
+<div class="mbk open" id="m-regen">
+  <div class="mdl">
+    <button class="mdl-x" onclick="document.getElementById('m-regen').classList.remove('open')">✕</button>
+    <div class="mdl-title">↺ Regenerate Illustration</div>
+    <p style="font-size:.83rem;color:var(--ink-muted);margin-bottom:.9rem">Describe what the new illustration should show. Story text and style will be preserved.</p>
+    <form hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen"
+          hx-target="#spread-area"
+          hx-swap="innerHTML"
+          hx-on:htmx:after-swap="document.getElementById('m-regen').classList.remove('open')">
+      <input type="hidden" name="side" value="{{side}}">
+      <label class="ml">Your prompt</label>
+      <textarea class="mta" name="prompt" placeholder="e.g. Show the bear under a large oak at golden hour, leaves spiraling around him" required></textarea>
+      <p class="mnote">Style: <strong>{{book.style}}</strong></p>
+      <div class="mdl-acts">
+        <button type="button" class="btn btn-ghost" onclick="document.getElementById('m-regen').classList.remove('open')">Cancel</button>
+        <button type="submit" class="btn btn-gold">✦ Generate</button>
+      </div>
+    </form>
+  </div>
+</div>

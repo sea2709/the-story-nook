@@ -1,0 +1,16 @@
+<div class="ss" id="ss">
+  <span class="ss-lbl">SPREADS</span>
+  {{#each book.pages}}
+  <div class="sc {{#if (eq @index ../spreadIdx)}}ac{{/if}}"
+       hx-get="/admin/books/{{../book.id}}/spread/{{@index}}"
+       hx-target="#spread-area"
+       hx-swap="innerHTML"
+       hx-on:htmx:after-swap="window._pvState.spreadIdx={{@index}};document.querySelectorAll('.sc').forEach((el,i)=>el.classList.toggle('ac',i==={{@index}}))">
+    <div class="sci">
+      <div class="scp">{{le}}</div>
+      <div class="scp">{{re}}</div>
+    </div>
+    <div class="scn">{{spreadLabel @index}}</div>
+  </div>
+  {{/each}}
+</div>

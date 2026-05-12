@@ -1,0 +1,106 @@
+<div id="admin-view">
+
+  <div class="a-topbar">
+    <h1>The Story Nook — Admin Portal</h1>
+    <a href="/" class="btn btn-ghost btn-sm">← Library</a>
+  </div>
+
+  <div class="a-body">
+
+    <!-- ── Left panel: new book form ──────────────────────────────────── -->
+    <div class="a-left">
+      <form id="new-book-form"
+            hx-post="/admin/books"
+            hx-encoding="multipart/form-data"
+            hx-target="#steps-container"
+            hx-swap="outerHTML"
+            hx-disabled-elt="#proc-btn">
+
+        <div class="psec">
+          <div class="plabel">New Book</div>
+          <label class="fl">Title</label>
+          <input type="text" class="fi" name="title" placeholder="e.g. The Sleepy Owl">
+          <label class="fl">Age Range</label>
+          <select class="fs" name="age">
+            <option value="2-4">Ages 2–4</option>
+            <option value="4-6" selected>Ages 4–6</option>
+            <option value="6-8">Ages 6–8</option>
+          </select>
+          <label class="fl">Upload Page Photos</label>
+          <div class="uz" id="uz">
+            <input type="file" name="photos" multiple accept="image/*" onchange="previewThumbs(this.files)">
+            <span class="uz-icon">📷</span>
+            <div class="uz-txt">Drop photos · one per page</div>
+          </div>
+          <div class="pthumbs" id="pthumbs"></div>
+        </div>
+
+        <div class="psec">
+          <div class="plabel">Illustration Style</div>
+          <input type="hidden" name="style" id="style-input" value="watercolor">
+          <div class="sgrid">
+            <div class="sopt sel" onclick="pickStyle(this,'watercolor')"><span class="sopt-ic">🎨</span><div class="sopt-nm">Watercolor</div><div class="sopt-sb">Soft &amp; painterly</div></div>
+            <div class="sopt" onclick="pickStyle(this,'cartoon')"><span class="sopt-ic">✏️</span><div class="sopt-nm">Cartoon</div><div class="sopt-sb">Bold &amp; playful</div></div>
+            <div class="sopt" onclick="pickStyle(this,'sketch')"><span class="sopt-ic">🖊️</span><div class="sopt-nm">Sketch</div><div class="sopt-sb">Hand-drawn</div></div>
+            <div class="sopt" onclick="pickStyle(this,'digital')"><span class="sopt-ic">💻</span><div class="sopt-nm">Digital</div><div class="sopt-sb">Vivid &amp; modern</div></div>
+          </div>
+        </div>
+
+        <div class="psec">
+          <button type="submit" class="btn btn-gold" style="width:100%" id="proc-btn">✦ Analyze &amp; Generate</button>
+          <div id="steps-container"></div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ── Center: tabs + content ──────────────────────────────────────── -->
+    <div class="a-center">
+      <div class="tab-bar">
+        <div class="tab act" data-tab="pv" id="tab-pv">Preview &amp; Edit</div>
+        <div class="tab" data-tab="mg" id="tab-mg"
+             hx-get="/admin/books"
+             hx-target="#book-list"
+             hx-swap="innerHTML">All Books</div>
+      </div>
+
+      <!-- Preview & Edit tab -->
+      <div class="tc act tc-pv" id="tc-pv">
+        <div id="preview-area">
+          {{#if activeBook}}
+            {{> preview-panel book=activeBook spreadIdx=spreadIdx}}
+          {{else}}
+            <div class="pv-empty">
+              <p style="font-size:1.05rem">No book loaded for preview.</p>
+              <p style="margin-top:.5rem;font-size:.88rem">Generate a new book or select one from <em>All Books</em>.</p>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+
+      <!-- All Books tab -->
+      <div class="tc" id="tc-mg">
+        <h2 style="font-family:'Cinzel',serif;font-size:.95rem;letter-spacing:.1em;color:var(--ink);margin-bottom:.35rem">All Books</h2>
+        <p style="font-style:italic;color:var(--ink-muted);font-size:.83rem;margin-bottom:1.3rem">Click to preview &amp; edit. Published books appear in the library.</p>
+        <div id="book-list">
+          {{> book-list books=books}}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function previewThumbs(files) {
+    document.getElementById('pthumbs').innerHTML = Array.from(files).map((f, i) => {
+      const url = URL.createObjectURL(f);
+      return `<div class="pthumb"><img src="${url}" alt=""><span class="pthumb-n">${i+1}</span></div>`;
+    }).join('');
+  }
+  function pickStyle(el, val) {
+    document.querySelectorAll('.sopt').forEach(o => o.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('style-input').value = val;
+  }
+</script>

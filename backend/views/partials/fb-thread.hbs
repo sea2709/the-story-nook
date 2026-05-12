@@ -1,0 +1,10 @@
+{{#if feedback.length}}
+  {{#each feedback}}
+  <div class="fb-msg {{#if ai}}fb-ai{{/if}}">
+    <div class="fb-meta">{{#if ai}}✦ AI{{else}}Admin{{/if}} · {{time}}</div>
+    {{text}}
+  </div>
+  {{/each}}
+{{else}}
+  <div style="font-style:italic;font-size:.75rem;color:var(--ink-muted)">No feedback yet for this spread.</div>
+{{/if}}

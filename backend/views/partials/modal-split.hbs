@@ -1,0 +1,20 @@
+<div class="mbk open" id="m-split">
+  <div class="mdl">
+    <button class="mdl-x" onclick="document.getElementById('m-split').classList.remove('open')">✕</button>
+    <div class="mdl-title">✂ Split into Two Spreads</div>
+    <p style="font-size:.83rem;color:var(--ink-muted);margin-bottom:.9rem">Each page becomes its own spread. Edit text for each.</p>
+    <form hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/split"
+          hx-target="#preview-area"
+          hx-swap="innerHTML"
+          hx-on:htmx:after-swap="document.getElementById('m-split').classList.remove('open')">
+      <label class="ml">Left page — Spread A</label>
+      <textarea class="mta" name="lt">{{spread.lt}}</textarea>
+      <label class="ml">Right page — Spread B</label>
+      <textarea class="mta" name="rt">{{spread.rt}}</textarea>
+      <div class="mdl-acts">
+        <button type="button" class="btn btn-ghost" onclick="document.getElementById('m-split').classList.remove('open')">Cancel</button>
+        <button type="submit" class="btn btn-gold">✂ Split</button>
+      </div>
+    </form>
+  </div>
+</div>

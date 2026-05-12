@@ -1,0 +1,19 @@
+<div id="steps-container"
+  {{#if polling}}
+  hx-get="/admin/jobs/{{jobId}}/status"
+  hx-trigger="every 600ms"
+  hx-target="this"
+  hx-swap="outerHTML"
+  {{/if}}>
+  <div class="steps-box" style="display:block;margin-top:.9rem">
+    <div class="steps-hd">
+      {{#if done}}Complete!{{else if error}}Error — check console{{else}}Processing…{{/if}}
+    </div>
+    {{#each job.steps}}
+    <div class="step-r">
+      <span class="sic {{stepClass this}}">{{stepIcon this}}</span>
+      {{stepLabel @index}}
+    </div>
+    {{/each}}
+  </div>
+</div>

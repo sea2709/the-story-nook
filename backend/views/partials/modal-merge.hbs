@@ -1,0 +1,20 @@
+<div class="mbk open" id="m-merge">
+  <div class="mdl">
+    <button class="mdl-x" onclick="document.getElementById('m-merge').classList.remove('open')">✕</button>
+    <div class="mdl-title">⊕ Merge with Previous Spread</div>
+    <p style="font-size:.83rem;color:var(--ink-muted);margin-bottom:.9rem">The two spreads combine into one. Edit the merged text.</p>
+    <form hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/merge"
+          hx-target="#preview-area"
+          hx-swap="innerHTML"
+          hx-on:htmx:after-swap="document.getElementById('m-merge').classList.remove('open')">
+      <label class="ml">Left page text</label>
+      <textarea class="mta" name="lt">{{prev.lt}}{{#if prev.rt}} — {{prev.rt}}{{/if}}</textarea>
+      <label class="ml">Right page text</label>
+      <textarea class="mta" name="rt">{{curr.lt}}{{#if curr.rt}} — {{curr.rt}}{{/if}}</textarea>
+      <div class="mdl-acts">
+        <button type="button" class="btn btn-ghost" onclick="document.getElementById('m-merge').classList.remove('open')">Cancel</button>
+        <button type="submit" class="btn btn-gold">⊕ Merge</button>
+      </div>
+    </form>
+  </div>
+</div>

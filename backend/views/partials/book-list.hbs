@@ -1,0 +1,25 @@
+{{#if books.length}}
+  {{#each books}}
+  <div class="arow">
+    <div class="at">{{emoji}}</div>
+    <div style="flex:1;min-width:0"
+         hx-get="/admin/books/{{id}}/preview"
+         hx-target="#preview-area"
+         hx-swap="innerHTML"
+         style="cursor:pointer"
+         onclick="activateTab('pv')"
+         role="button">
+      <div class="an">{{title}}</div>
+      <div class="am">Ages {{age}} · {{pages.length}} spreads · {{style}}</div>
+    </div>
+    <span class="sp {{statusClass status}}">{{status}}</span>
+    <button class="btn btn-red btn-sm"
+            hx-delete="/admin/books/{{id}}"
+            hx-target="closest .arow"
+            hx-swap="outerHTML"
+            hx-confirm="Remove this book?">Remove</button>
+  </div>
+  {{/each}}
+{{else}}
+  <p style="font-style:italic;color:var(--ink-muted);font-size:.86rem">No books yet.</p>
+{{/if}}

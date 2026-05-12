@@ -1,0 +1,84 @@
+<div class="pv-spread" id="pv-spread">
+  {{! Left page }}
+  <div class="pv-page">
+    <div class="pvp-hd">
+      <span class="pvp-num">Page {{pageNum spreadIdx 'l'}}</span>
+      <div class="pvp-acts">
+        <button class="pab" data-edit-side="l">✎ Edit Text</button>
+        <button class="pab"
+                hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side=l"
+                hx-target="#modal-container"
+                hx-swap="innerHTML">↺ New Image</button>
+      </div>
+    </div>
+    <div class="pv-illus">
+      {{#if spread.leftImage}}<img src="{{spread.leftImage}}" alt="">{{else}}<span>{{spread.le}}</span>{{/if}}
+      <div class="pv-ov">
+        <button class="pv-ov-btn"
+                hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side=l"
+                hx-target="#modal-container"
+                hx-swap="innerHTML">↺ Regenerate</button>
+      </div>
+    </div>
+    <div class="pv-txtbox">
+      <div id="pvtd-l" class="pvtd">
+        {{#if spread.lt}}{{spread.lt}}{{else}}<span style="font-style:italic;color:var(--ink-muted)">Empty</span>{{/if}}
+      </div>
+      <div id="pvte-l" style="display:none">
+        <form hx-put="/admin/books/{{book.id}}/spread/{{spreadIdx}}/text"
+              hx-target="#spread-area"
+              hx-swap="innerHTML">
+          <input type="hidden" name="side" value="l">
+          <textarea class="pvte" id="pvta-l" name="text">{{spread.lt}}</textarea>
+          <div class="pv-tea">
+            <button type="button" class="btn btn-ghost btn-sm" data-cancel-side="l">Cancel</button>
+            <button type="submit" class="btn btn-gold btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {{! Right page }}
+  <div class="pv-page">
+    <div class="pvp-hd">
+      <span class="pvp-num">Page {{pageNum spreadIdx 'r'}}</span>
+      <div class="pvp-acts">
+        <button class="pab" data-edit-side="r">✎ Edit Text</button>
+        <button class="pab"
+                hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side=r"
+                hx-target="#modal-container"
+                hx-swap="innerHTML">↺ New Image</button>
+      </div>
+    </div>
+    <div class="pv-illus">
+      {{#if spread.rightImage}}<img src="{{spread.rightImage}}" alt="">{{else}}<span>{{spread.re}}</span>{{/if}}
+      <div class="pv-ov">
+        <button class="pv-ov-btn"
+                hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side=r"
+                hx-target="#modal-container"
+                hx-swap="innerHTML">↺ Regenerate</button>
+      </div>
+    </div>
+    <div class="pv-txtbox">
+      <div id="pvtd-r" class="pvtd">
+        {{#if spread.rt}}{{spread.rt}}{{else}}<span style="font-style:italic;color:var(--ink-muted)">Empty</span>{{/if}}
+      </div>
+      <div id="pvte-r" style="display:none">
+        <form hx-put="/admin/books/{{book.id}}/spread/{{spreadIdx}}/text"
+              hx-target="#spread-area"
+              hx-swap="innerHTML">
+          <input type="hidden" name="side" value="r">
+          <textarea class="pvte" id="pvta-r" name="text">{{spread.rt}}</textarea>
+          <div class="pv-tea">
+            <button type="button" class="btn btn-ghost btn-sm" data-cancel-side="r">Cancel</button>
+            <button type="submit" class="btn btn-gold btn-sm">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{#if regenNote}}
+<p style="font-style:italic;font-size:.78rem;color:var(--ink-muted);padding:.4rem 1.6rem">✦ {{regenNote}}</p>
+{{/if}}
