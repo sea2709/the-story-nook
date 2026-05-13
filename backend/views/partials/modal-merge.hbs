@@ -1,17 +1,17 @@
 <div class="mbk open" id="m-merge">
-  <div class="mdl">
-    <button class="mdl-x" onclick="document.getElementById('m-merge').classList.remove('open')">✕</button>
-    <div class="mdl-title">⊕ Merge with Previous Spread</div>
+  <div class="bg-cream border-[1.5px] border-parchment-deep rounded-md w-[min(500px,92vw)] max-h-[85vh] overflow-y-auto p-[1.8rem] relative shadow-[0_20px_60px_rgba(0,0,0,.4)]">
+    <button class="absolute top-[.9rem] right-[1.1rem] bg-transparent border-none text-[1.1rem] text-ink-muted cursor-pointer leading-none hover:text-accent-red" onclick="document.getElementById('m-merge').classList.remove('open')">✕</button>
+    <div class="font-cinzel text-[.95rem] tracking-[.08em] text-ink mb-[1.1rem] pb-[.7rem] border-b border-parchment-deep">⊕ Merge with Previous Spread</div>
     <p style="font-size:.83rem;color:var(--ink-muted);margin-bottom:.9rem">The two spreads combine into one. Edit the merged text.</p>
     <form hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/merge"
           hx-target="#preview-area"
           hx-swap="innerHTML"
           hx-on:htmx:after-swap="document.getElementById('m-merge').classList.remove('open')">
-      <label class="ml">Left page text</label>
-      <textarea class="mta" name="lt">{{prev.lt}}{{#if prev.rt}} — {{prev.rt}}{{/if}}</textarea>
-      <label class="ml">Right page text</label>
-      <textarea class="mta" name="rt">{{curr.lt}}{{#if curr.rt}} — {{curr.rt}}{{/if}}</textarea>
-      <div class="mdl-acts">
+      <label class="block text-[.76rem] tracking-[.07em] uppercase text-ink-muted mb-[.35rem] mt-[.9rem] first:mt-0">Left page text</label>
+      <textarea class="w-full font-lora text-[.9rem] px-2.75 py-2 border border-parchment-deep rounded-sm bg-cream text-ink outline-none focus:border-accent-gold resize-y min-h-18.75" name="lt">{{prev.lt}}{{#if prev.rt}} — {{prev.rt}}{{/if}}</textarea>
+      <label class="block text-[.76rem] tracking-[.07em] uppercase text-ink-muted mb-[.35rem] mt-[.9rem] first:mt-0">Right page text</label>
+      <textarea class="w-full font-lora text-[.9rem] px-2.75 py-2 border border-parchment-deep rounded-sm bg-cream text-ink outline-none focus:border-accent-gold resize-y min-h-18.75" name="rt">{{curr.lt}}{{#if curr.rt}} — {{curr.rt}}{{/if}}</textarea>
+      <div class="flex gap-[.65rem] justify-end mt-[1.4rem] pt-[.9rem] border-t border-parchment-deep">
         <button type="button" class="btn btn-ghost" onclick="document.getElementById('m-merge').classList.remove('open')">Cancel</button>
         <button type="submit" class="btn btn-gold">⊕ Merge</button>
       </div>

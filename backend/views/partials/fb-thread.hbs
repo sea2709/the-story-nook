@@ -1,7 +1,7 @@
 {{#if feedback.length}}
   {{#each feedback}}
-  <div class="fb-msg {{#if ai}}fb-ai{{/if}}">
-    <div class="fb-meta">{{#if ai}}✦ AI{{else}}Admin{{/if}} · {{time}}</div>
+  <div class="fb-msg bg-cream border border-parchment-deep rounded-sm px-3 py-[.45rem] text-[.78rem] leading-normal text-ink {{#if ai}}fb-ai{{/if}}">
+    <div class="fb-meta text-[.65rem] text-ink-muted mb-[.12rem] italic">{{#if ai}}✦ AI{{else}}Admin{{/if}} · {{time}}</div>
     {{text}}
   </div>
   {{/each}}

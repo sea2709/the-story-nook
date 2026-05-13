@@ -1,14 +1,14 @@
-<div id="admin-view">
+<div id="admin-view" class="flex flex-col min-h-screen">
 
-  <div class="a-topbar">
-    <h1>The Story Nook — Admin Portal</h1>
+  <div class="bg-admin-bg text-parchment px-10 py-[1.1rem] flex items-center justify-between border-b-2 border-accent-gold shrink-0">
+    <h1 class="font-cinzel text-[1.15rem] tracking-[.1em]">The Story Nook — Admin Portal</h1>
     <a href="/" class="btn btn-ghost btn-sm">← Library</a>
   </div>
 
-  <div class="a-body">
+  <div class="flex flex-1 min-h-0 overflow-hidden max-[860px]:flex-col">
 
     <!-- ── Left panel: new book form ──────────────────────────────────── -->
-    <div class="a-left">
+    <div class="w-[295px] shrink-0 bg-admin-surf border-r border-accent-gold/25 flex flex-col overflow-y-auto max-[860px]:w-full max-[860px]:max-h-[40vh]">
       <form id="new-book-form"
             hx-post="/admin/books"
             hx-encoding="multipart/form-data"
@@ -16,37 +16,37 @@
             hx-swap="outerHTML"
             hx-disabled-elt="#proc-btn">
 
-        <div class="psec">
-          <div class="plabel">New Book</div>
-          <label class="fl">Title</label>
-          <input type="text" class="fi" name="title" placeholder="e.g. The Sleepy Owl">
-          <label class="fl">Age Range</label>
-          <select class="fs" name="age">
-            <option value="2-4">Ages 2–4</option>
-            <option value="4-6" selected>Ages 4–6</option>
-            <option value="6-8">Ages 6–8</option>
+        <div class="px-[1.3rem] py-[1.2rem] border-b border-accent-gold/25">
+          <div class="plabel font-cinzel text-[.68rem] tracking-[.14em] text-accent-gold mb-[.85rem] flex items-center gap-2">New Book</div>
+          <label class="block text-[.72rem] tracking-[.08em] uppercase text-parchment/50 mb-[.35rem] mt-[.85rem]">Title</label>
+          <input type="text" class="w-full font-lora text-[.87rem] px-[11px] py-2 border border-accent-gold/25 rounded-sm bg-parchment/7 text-parchment outline-none transition-colors duration-200 focus:border-accent-gold" name="title" placeholder="e.g. The Sleepy Owl">
+          <label class="block text-[.72rem] tracking-[.08em] uppercase text-parchment/50 mb-[.35rem] mt-[.85rem]">Age Range</label>
+          <select class="w-full font-lora text-[.87rem] px-[11px] py-2 border border-accent-gold/25 rounded-sm bg-parchment/7 text-parchment outline-none transition-colors duration-200 focus:border-accent-gold" name="age">
+            <option value="2-4" class="bg-[#2c1f14] text-parchment">Ages 2–4</option>
+            <option value="4-6" selected class="bg-[#2c1f14] text-parchment">Ages 4–6</option>
+            <option value="6-8" class="bg-[#2c1f14] text-parchment">Ages 6–8</option>
           </select>
-          <label class="fl">Upload Page Photos</label>
-          <div class="uz" id="uz">
+          <label class="block text-[.72rem] tracking-[.08em] uppercase text-parchment/50 mb-[.35rem] mt-[.85rem]">Upload Page Photos</label>
+          <div class="uz border-[1.5px] border-dashed border-accent-gold/40 rounded p-[1.4rem_1rem] text-center cursor-pointer transition-all duration-200 relative bg-parchment/[.03] hover:border-accent-gold hover:bg-accent-gold/[.07]" id="uz">
             <input type="file" name="photos" multiple accept="image/*" id="photo-input">
-            <span class="uz-icon">📷</span>
-            <div class="uz-txt">Drop photos · one per page</div>
+            <span class="text-[1.9rem] block mb-[.3rem]">📷</span>
+            <div class="italic text-parchment/50 text-[.8rem]">Drop photos · one per page</div>
           </div>
-          <div class="pthumbs" id="pthumbs"></div>
+          <div class="flex flex-wrap gap-1.25 mt-[.65rem]" id="pthumbs"></div>
         </div>
 
-        <div class="psec">
-          <div class="plabel">Illustration Style</div>
+        <div class="px-[1.3rem] py-[1.2rem] border-b border-accent-gold/25">
+          <div class="plabel font-cinzel text-[.68rem] tracking-[.14em] text-accent-gold mb-[.85rem] flex items-center gap-2">Illustration Style</div>
           <input type="hidden" name="style" id="style-input" value="watercolor">
-          <div class="sgrid">
-            <div class="sopt sel" onclick="pickStyle(this,'watercolor')"><span class="sopt-ic">🎨</span><div class="sopt-nm">Watercolor</div><div class="sopt-sb">Soft &amp; painterly</div></div>
-            <div class="sopt" onclick="pickStyle(this,'cartoon')"><span class="sopt-ic">✏️</span><div class="sopt-nm">Cartoon</div><div class="sopt-sb">Bold &amp; playful</div></div>
-            <div class="sopt" onclick="pickStyle(this,'sketch')"><span class="sopt-ic">🖊️</span><div class="sopt-nm">Sketch</div><div class="sopt-sb">Hand-drawn</div></div>
-            <div class="sopt" onclick="pickStyle(this,'digital')"><span class="sopt-ic">💻</span><div class="sopt-nm">Digital</div><div class="sopt-sb">Vivid &amp; modern</div></div>
+          <div class="grid grid-cols-2 gap-[7px] mt-[.4rem]">
+            <div class="sopt border-[1.5px] border-accent-gold/25 rounded p-[9px_7px] cursor-pointer text-center transition-all duration-200 bg-parchment/[.04] hover:border-accent-gold/55 sel" onclick="pickStyle(this,'watercolor')"><span class="text-[1.4rem] block mb-[.2rem]">🎨</span><div class="text-[.72rem] text-parchment/80">Watercolor</div><div class="text-[.62rem] text-parchment/40 italic">Soft &amp; painterly</div></div>
+            <div class="sopt border-[1.5px] border-accent-gold/25 rounded p-[9px_7px] cursor-pointer text-center transition-all duration-200 bg-parchment/[.04] hover:border-accent-gold/55" onclick="pickStyle(this,'cartoon')"><span class="text-[1.4rem] block mb-[.2rem]">✏️</span><div class="text-[.72rem] text-parchment/80">Cartoon</div><div class="text-[.62rem] text-parchment/40 italic">Bold &amp; playful</div></div>
+            <div class="sopt border-[1.5px] border-accent-gold/25 rounded p-[9px_7px] cursor-pointer text-center transition-all duration-200 bg-parchment/[.04] hover:border-accent-gold/55" onclick="pickStyle(this,'sketch')"><span class="text-[1.4rem] block mb-[.2rem]">🖊️</span><div class="text-[.72rem] text-parchment/80">Sketch</div><div class="text-[.62rem] text-parchment/40 italic">Hand-drawn</div></div>
+            <div class="sopt border-[1.5px] border-accent-gold/25 rounded p-[9px_7px] cursor-pointer text-center transition-all duration-200 bg-parchment/[.04] hover:border-accent-gold/55" onclick="pickStyle(this,'digital')"><span class="text-[1.4rem] block mb-[.2rem]">💻</span><div class="text-[.72rem] text-parchment/80">Digital</div><div class="text-[.62rem] text-parchment/40 italic">Vivid &amp; modern</div></div>
           </div>
         </div>
 
-        <div class="psec">
+        <div class="px-[1.3rem] py-[1.2rem] border-b border-accent-gold/25">
           <button type="submit" class="btn btn-gold" style="width:100%" id="proc-btn">✦ Analyze &amp; Generate</button>
           <div id="steps-container"></div>
         </div>
@@ -55,22 +55,22 @@
     </div>
 
     <!-- ── Center: tabs + content ──────────────────────────────────────── -->
-    <div class="a-center">
-      <div class="tab-bar">
-        <div class="tab act" data-tab="pv" id="tab-pv">Preview &amp; Edit</div>
-        <div class="tab" data-tab="mg" id="tab-mg"
+    <div class="flex-1 overflow-hidden flex flex-col bg-cream">
+      <div class="flex border-b-2 border-parchment-deep bg-parchment shrink-0">
+        <div class="tab font-cinzel text-[.7rem] tracking-[.1em] py-[.9rem] px-[1.4rem] cursor-pointer text-ink-muted border-b-2 border-transparent -mb-[2px] transition-all duration-200 select-none hover:text-ink act" data-tab="pv" id="tab-pv">Preview &amp; Edit</div>
+        <div class="tab font-cinzel text-[.7rem] tracking-[.1em] py-[.9rem] px-[1.4rem] cursor-pointer text-ink-muted border-b-2 border-transparent -mb-[2px] transition-all duration-200 select-none hover:text-ink" data-tab="mg" id="tab-mg"
              hx-get="/admin/books"
              hx-target="#book-list"
              hx-swap="innerHTML">All Books</div>
       </div>
 
       <!-- Preview & Edit tab -->
-      <div class="tc act tc-pv" id="tc-pv">
+      <div class="tc flex-1 overflow-hidden act" id="tc-pv">
         <div id="preview-area">
           {{#if activeBook}}
             {{> preview-panel book=activeBook spreadIdx=spreadIdx}}
           {{else}}
-            <div class="pv-empty">
+            <div class="text-center p-[5rem_2rem] text-ink-muted italic">
               <p style="font-size:1.05rem">No book loaded for preview.</p>
               <p style="margin-top:.5rem;font-size:.88rem">Generate a new book or select one from <em>All Books</em>.</p>
             </div>
@@ -79,7 +79,7 @@
       </div>
 
       <!-- All Books tab -->
-      <div class="tc" id="tc-mg">
+      <div class="tc flex-1 p-[1.8rem_2.2rem] overflow-y-auto" id="tc-mg">
         <h2 style="font-family:'Cinzel',serif;font-size:.95rem;letter-spacing:.1em;color:var(--ink);margin-bottom:.35rem">All Books</h2>
         <p style="font-style:italic;color:var(--ink-muted);font-size:.83rem;margin-bottom:1.3rem">Click to preview &amp; edit. Published books appear in the library.</p>
         <div id="book-list">
@@ -98,9 +98,9 @@
     const container = document.getElementById('pthumbs');
     let dragSrc = null;
     container.innerHTML = _files.map((f, i) =>
-      `<div class="pthumb" draggable="true" data-idx="${i}">
-        <img src="${URL.createObjectURL(f)}" alt="">
-        <span class="pthumb-n">${i + 1}</span>
+      `<div class="pthumb w-12.5 h-16 rounded-sm overflow-hidden border-[1.5px] border-accent-gold/30 bg-parchment/[.08] flex items-center justify-center text-[1.1rem] relative cursor-grab" draggable="true" data-idx="${i}">
+        <img src="${URL.createObjectURL(f)}" alt="" class="w-full h-full object-cover">
+        <span class="absolute bottom-[1px] right-[2px] text-[.55rem] text-parchment/55">${i + 1}</span>
       </div>`
     ).join('');
     container.querySelectorAll('.pthumb').forEach(el => {

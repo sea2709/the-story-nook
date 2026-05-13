@@ -5,13 +5,13 @@
   hx-target="this"
   hx-swap="outerHTML"
   {{/if}}>
-  <div class="steps-box" style="display:block;margin-top:.9rem">
-    <div class="steps-hd">
+  <div class="bg-black/30 rounded p-[1.1rem_1.2rem]" style="display:block;margin-top:.9rem">
+    <div class="font-cinzel text-[.68rem] tracking-widest text-accent-gold mb-[.7rem]">
       {{#if done}}Complete!{{else if error}}Error — check console{{else}}Processing…{{/if}}
     </div>
     {{#each job.steps}}
-    <div class="step-r">
-      <span class="sic {{stepClass this}}">{{stepIcon this}}</span>
+    <div class="flex items-center gap-2 py-1.25 border-b border-parchment/[.07] text-[.78rem] text-parchment/70 last:border-b-0">
+      <span class="sic w-4 text-center shrink-0 {{stepClass this}}">{{stepIcon this}}</span>
       {{stepLabel @index}}
     </div>
     {{/each}}

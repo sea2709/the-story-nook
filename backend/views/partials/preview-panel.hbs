@@ -1,22 +1,22 @@
-<div class="pv-editor">
-  <div class="pv-top">
+<div class="flex-1 flex flex-col overflow-hidden h-full">
+  <div class="flex-1 flex flex-col overflow-hidden min-h-0">
     <!-- Spread view -->
     <div id="spread-area">
       {{> spread-editor book=book spread=(lookup book.pages spreadIdx) spreadIdx=spreadIdx}}
     </div>
 
     <!-- Feedback section -->
-    <div class="fb-section">
-      <div class="fb-hd">SPREAD FEEDBACK &amp; NOTES</div>
-      <div id="fb-thread">
+    <div class="px-[1.6rem] pt-[.8rem] pb-4 border-t-[1.5px] border-parchment-deep bg-parchment shrink-0">
+      <div class="font-cinzel text-[.65rem] tracking-[.12em] text-ink-muted mb-[.55rem]">SPREAD FEEDBACK &amp; NOTES</div>
+      <div id="fb-thread" class="flex flex-col gap-[.4rem] mb-[.55rem] max-h-30 overflow-y-auto">
         {{> fb-thread feedback=(lookup (lookup book.pages spreadIdx) 'fb')}}
       </div>
-      <form class="fb-row"
+      <form class="flex gap-[.45rem]"
             hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/feedback"
             hx-target="#fb-thread"
             hx-swap="innerHTML"
             hx-on:htmx:after-request="this.reset();document.getElementById('fb-thread').scrollTop=9999">
-        <input type="text" class="fb-inp" name="text"
+        <input type="text" class="flex-1 font-lora text-[.82rem] px-2.5 py-1.75 border border-parchment-deep rounded-sm bg-cream text-ink outline-none focus:border-accent-gold" name="text"
                placeholder="e.g. The sky should be stormy…">
         <button type="submit" class="btn btn-gold btn-sm">Send</button>
       </form>
@@ -29,34 +29,34 @@
   </div>
 
   <!-- Operations toolbar -->
-  <div class="op-tb">
-    <span class="op-lbl">SPREAD OPS</span>
-    <button class="op-btn"
+  <div class="px-[1.6rem] py-[.6rem] bg-cream border-t border-parchment-deep flex items-center gap-2 flex-wrap shrink-0">
+    <span class="font-cinzel text-[.62rem] tracking-widest text-ink-muted mr-[.15rem]">SPREAD OPS</span>
+    <button class="bg-cream border border-parchment-deep text-ink font-lora text-[.73rem] px-3 py-1.25 rounded-sm cursor-pointer transition-all duration-200 hover:border-accent-gold hover:bg-parchment"
             hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/split-form"
             hx-target="#modal-container"
             hx-swap="innerHTML">✂ Split</button>
-    <button class="op-btn"
+    <button class="bg-cream border border-parchment-deep text-ink font-lora text-[.73rem] px-3 py-1.25 rounded-sm cursor-pointer transition-all duration-200 hover:border-accent-gold hover:bg-parchment"
             hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/merge-form"
             hx-target="#modal-container"
             hx-swap="innerHTML">⊕ Merge w/ Prev</button>
-    <button class="op-btn op-d"
+    <button class="bg-cream border border-parchment-deep text-ink font-lora text-[.73rem] px-3 py-1.25 rounded-sm cursor-pointer transition-all duration-200 hover:border-accent-red hover:text-accent-red"
             hx-delete="/admin/books/{{book.id}}/spread/{{spreadIdx}}"
             hx-target="#preview-area"
             hx-swap="innerHTML"
             hx-confirm="Delete this spread?">🗑 Delete</button>
-    <div class="op-sep"></div>
-    <button class="op-btn"
+    <div class="w-px h-5.5 bg-parchment-deep shrink-0"></div>
+    <button class="bg-cream border border-parchment-deep text-ink font-lora text-[.73rem] px-3 py-1.25 rounded-sm cursor-pointer transition-all duration-200 hover:border-accent-gold hover:bg-parchment"
             hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/move"
             hx-vals='{"direction":"left"}'
             hx-target="#preview-area"
             hx-swap="innerHTML">← Move Left</button>
-    <button class="op-btn"
+    <button class="bg-cream border border-parchment-deep text-ink font-lora text-[.73rem] px-3 py-1.25 rounded-sm cursor-pointer transition-all duration-200 hover:border-accent-gold hover:bg-parchment"
             hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/move"
             hx-vals='{"direction":"right"}'
             hx-target="#preview-area"
             hx-swap="innerHTML">Move Right →</button>
-    <div class="op-sep"></div>
-    <button class="op-pub"
+    <div class="w-px h-5.5 bg-parchment-deep shrink-0"></div>
+    <button class="bg-accent-gold text-cream border-none font-cinzel text-[.68rem] tracking-[.08em] px-4 py-1.5 rounded-sm cursor-pointer transition-all duration-200 hover:bg-[#a97520]"
             hx-post="/admin/books/{{book.id}}/publish"
             hx-target="#preview-area"
             hx-swap="innerHTML">✦ Publish to Library</button>

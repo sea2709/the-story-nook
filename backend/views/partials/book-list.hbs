@@ -1,18 +1,17 @@
 {{#if books.length}}
   {{#each books}}
-  <div class="arow">
-    <div class="at">{{emoji}}</div>
-    <div style="flex:1;min-width:0"
+  <div class="arow flex items-center gap-[.9rem] p-[.85rem_.9rem] border border-parchment-deep rounded cursor-pointer transition-all duration-200 bg-cream mb-[.6rem] hover:border-accent-gold hover:bg-parchment">
+    <div class="w-10.5 h-14 rounded-sm bg-parchment-dark flex items-center justify-center text-[1.3rem] shrink-0">{{emoji}}</div>
+    <div class="flex-1 min-w-0 cursor-pointer"
          hx-get="/admin/books/{{id}}/preview"
          hx-target="#preview-area"
          hx-swap="innerHTML"
-         style="cursor:pointer"
          onclick="activateTab('pv')"
          role="button">
-      <div class="an">{{title}}</div>
-      <div class="am">Ages {{age}} · {{pages.length}} spreads · {{style}}</div>
+      <div class="font-playfair text-[.9rem] text-ink">{{title}}</div>
+      <div class="text-[.73rem] text-ink-muted mt-0.5">Ages {{age}} · {{pages.length}} spreads · {{style}}</div>
     </div>
-    <span class="sp {{statusClass status}}">{{status}}</span>
+    <span class="text-[.66rem] px-2.25 py-0.75 rounded-full font-lora shrink-0 {{statusClass status}}">{{status}}</span>
     <button class="btn btn-red btn-sm"
             hx-delete="/admin/books/{{id}}"
             hx-target="closest .arow"

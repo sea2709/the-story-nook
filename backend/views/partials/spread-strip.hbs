@@ -1,16 +1,16 @@
-<div class="ss" id="ss">
-  <span class="ss-lbl">SPREADS</span>
+<div class="bg-parchment border-t-[1.5px] border-parchment-deep px-[1.2rem] py-[.55rem] flex gap-[.45rem] overflow-x-auto shrink-0 items-center" id="ss">
+  <span class="font-cinzel text-[.62rem] tracking-widest text-ink-muted shrink-0 mr-[.2rem]">SPREADS</span>
   {{#each book.pages}}
-  <div class="sc {{#if (eq @index ../spreadIdx)}}ac{{/if}}"
+  <div class="sc group flex flex-col items-center cursor-pointer shrink-0 {{#if (eq @index ../spreadIdx)}}ac{{/if}}"
        hx-get="/admin/books/{{../book.id}}/spread/{{@index}}"
        hx-target="#spread-area"
        hx-swap="innerHTML"
        hx-on:htmx:after-swap="window._pvState.spreadIdx={{@index}};document.querySelectorAll('.sc').forEach((el,i)=>el.classList.toggle('ac',i==={{@index}}))">
-    <div class="sci">
-      <div class="scp">{{le}}</div>
-      <div class="scp">{{re}}</div>
+    <div class="sci flex gap-0.5 border-[1.5px] border-parchment-deep rounded-sm p-0.5 transition-all duration-150 group-hover:border-accent-gold">
+      <div class="w-6.25 h-8 bg-page-bg rounded-[1px] flex items-center justify-center text-[.8rem]">{{le}}</div>
+      <div class="w-6.25 h-8 bg-page-bg rounded-[1px] flex items-center justify-center text-[.8rem]">{{re}}</div>
     </div>
-    <div class="scn">{{spreadLabel @index}}</div>
+    <div class="text-[.58rem] text-ink-muted mt-0.5">{{spreadLabel @index}}</div>
   </div>
   {{/each}}
 </div>
