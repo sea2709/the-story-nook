@@ -6,5 +6,6 @@ backend/public/uploads/*
 !backend/public/uploads/.gitkeep
 frontend/dist/
 backend/public/css/admin.css
+backend/data/books.json
 *.log
 .DS_Store
