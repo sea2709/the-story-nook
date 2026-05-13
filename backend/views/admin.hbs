@@ -28,7 +28,7 @@
           </select>
           <label class="fl">Upload Page Photos</label>
           <div class="uz" id="uz">
-            <input type="file" name="photos" multiple accept="image/*" onchange="previewThumbs(this.files)">
+            <input type="file" name="photos" multiple accept="image/*" id="photo-input">
             <span class="uz-icon">📷</span>
             <div class="uz-txt">Drop photos · one per page</div>
           </div>
@@ -92,12 +92,50 @@
 </div>
 
 <script>
-  function previewThumbs(files) {
-    document.getElementById('pthumbs').innerHTML = Array.from(files).map((f, i) => {
-      const url = URL.createObjectURL(f);
-      return `<div class="pthumb"><img src="${url}" alt=""><span class="pthumb-n">${i+1}</span></div>`;
-    }).join('');
+  let _files = [];
+
+  function _renderThumbs() {
+    const container = document.getElementById('pthumbs');
+    let dragSrc = null;
+    container.innerHTML = _files.map((f, i) =>
+      `<div class="pthumb" draggable="true" data-idx="${i}">
+        <img src="${URL.createObjectURL(f)}" alt="">
+        <span class="pthumb-n">${i + 1}</span>
+      </div>`
+    ).join('');
+    container.querySelectorAll('.pthumb').forEach(el => {
+      el.addEventListener('dragstart', e => {
+        dragSrc = +e.currentTarget.dataset.idx;
+        e.currentTarget.classList.add('dragging');
+      });
+      el.addEventListener('dragend',  e => e.currentTarget.classList.remove('dragging'));
+      el.addEventListener('dragover', e => { e.preventDefault(); e.currentTarget.classList.add('drag-over'); });
+      el.addEventListener('dragleave', e => e.currentTarget.classList.remove('drag-over'));
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        e.currentTarget.classList.remove('drag-over');
+        const to = +e.currentTarget.dataset.idx;
+        if (dragSrc !== null && dragSrc !== to) {
+          _files.splice(to, 0, _files.splice(dragSrc, 1)[0]);
+          _renderThumbs();
+          _syncInput();
+        }
+        dragSrc = null;
+      });
+    });
   }
+
+  function _syncInput() {
+    const dt = new DataTransfer();
+    _files.forEach(f => dt.items.add(f));
+    document.getElementById('photo-input').files = dt.files;
+  }
+
+  document.getElementById('photo-input').addEventListener('change', function () {
+    _files = Array.from(this.files);
+    _renderThumbs();
+  });
+
   function pickStyle(el, val) {
     document.querySelectorAll('.sopt').forEach(o => o.classList.remove('sel'));
     el.classList.add('sel');

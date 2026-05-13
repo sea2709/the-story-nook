@@ -70,9 +70,11 @@ body {
   .uz-txt   { @apply italic text-parchment/50 text-[.8rem]; }
 
   .pthumbs  { @apply flex flex-wrap gap-[5px] mt-[.65rem]; }
-  .pthumb   { @apply w-[50px] h-[64px] rounded-sm overflow-hidden border-[1.5px] border-accent-gold/30 bg-parchment/[.08] flex items-center justify-center text-[1.1rem] relative; }
+  .pthumb   { @apply w-[50px] h-[64px] rounded-sm overflow-hidden border-[1.5px] border-accent-gold/30 bg-parchment/[.08] flex items-center justify-center text-[1.1rem] relative cursor-grab; }
   .pthumb img    { @apply w-full h-full object-cover; }
   .pthumb-n { @apply absolute bottom-[1px] right-[2px] text-[.55rem] text-parchment/55; }
+  .pthumb.dragging  { @apply opacity-40; cursor: grabbing; }
+  .pthumb.drag-over { outline: 2px solid var(--color-accent-gold); outline-offset: 1px; }
 
   .sgrid    { @apply grid grid-cols-2 gap-[7px] mt-[.4rem]; }
   .sopt       { @apply border-[1.5px] border-accent-gold/25 rounded p-[9px_7px] cursor-pointer text-center transition-all duration-200 bg-parchment/[.04]; }
