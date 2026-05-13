@@ -14,13 +14,13 @@ picture-books/
 |---|---|
 | Public reader | React 18, TypeScript, Vite, Tailwind CSS v4 |
 | Admin portal | Express, Handlebars, HTMX 2, Tailwind CSS v4 |
-| AI generation | Anthropic Claude (claude-sonnet-4) |
+| AI generation | Google Gemini (`gemini-2.0-flash`) |
 | Storage | JSON file (`backend/data/books.json`) + local uploads |
 
 ## Prerequisites
 
 - [nvm](https://github.com/nvm-sh/nvm) with Node 26 (`nvm install 26`)
-- An Anthropic API key
+- A Google AI Studio API key ([get one here](https://aistudio.google.com/apikey))
 
 ## Setup
 
@@ -104,6 +104,6 @@ frontend/
 
 | Variable | Description |
 |---|---|
-| `ANTHROPIC_API_KEY` | Required. Your Anthropic API key. |
+| `GOOGLE_API_KEY` | Required. Your Google AI Studio API key. |
 | `PORT` | Backend port. Defaults to `3000`. |
 | `NODE_ENV` | `development` or `production`. |
