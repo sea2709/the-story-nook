@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const store = require('../services/bookStore');
-const claude = require('../services/claude');
+const google = require('../services/google');
 
 const router = express.Router();
 
@@ -90,7 +90,7 @@ async function runJob(jobId) {
   job.steps[0] = 'run';
   let aiPages = null;
   try {
-    aiPages = await claude.generateBookText(job.title, job.style, job.filePaths);
+    aiPages = await google.generateBookText(job.title, job.style, job.filePaths);
   } catch (e) {
     console.warn('Claude generation failed, using fallback:', e.message);
   }
@@ -199,7 +199,7 @@ router.post('/books/:id/spread/:i/feedback', async (req, res) => {
   let aiText;
   try {
     const spread = store.getById(req.params.id).pages[spreadIdx];
-    aiText = await claude.generateFeedback(book.title, spread, text, book.style);
+    aiText = await google.generateFeedback(book.title, spread, text, book.style);
   } catch {
     aiText = '(Could not reach AI — check your API key)';
   }
@@ -230,7 +230,7 @@ router.post('/books/:id/spread/:i/regen', async (req, res) => {
   const pageText = side === 'l' ? spread.lt : spread.rt;
 
   try {
-    const description = await claude.generateRegenDescription(book.title, pageText, prompt, book.style);
+    const description = await google.generateRegenDescription(book.title, pageText, prompt, book.style);
     const em = EMOJIS[book.style] || EMOJIS.watercolor;
     const newEmoji = em[Math.floor(Math.random() * em.length)];
     store.updateSpread(req.params.id, spreadIdx, side === 'l' ? { le: newEmoji } : { re: newEmoji });
