@@ -1,5 +1,9 @@
 const { GoogleGenAI } = require('@google/genai');
 const fs = require('fs');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+
+const UPLOADS_DIR = path.join(__dirname, '../public/uploads');
 
 const MODEL = 'gemini-3.1-pro-preview';
 
@@ -64,4 +68,33 @@ async function generateRegenDescription(bookTitle, pageText, prompt, style) {
   return response.text.trim() || 'New illustration applied.';
 }
 
-module.exports = { generateBookText, generateFeedback, generateRegenDescription };
+async function generateImage(bookTitle, pageText, description, style, size) {
+  const ai = getClient();
+  const styleName = STYLE_NAMES[style] || style;
+  const aspectRatio = size === 'landscape' ? '16:9' : '3:4';
+
+  const prompt = [
+    description ? `Theme: ${description}. ` : '',
+    `Children's picture book illustration for "${bookTitle}". `,
+    `Scene: ${pageText}. `,
+    `Art style: ${styleName}, warm and child-friendly.`,
+  ].join('');
+
+  const response = await ai.models.generateImages({
+    model: 'imagen-4.0-generate-001',
+    prompt,
+    config: {
+      numberOfImages: 1,
+      aspectRatio,
+      outputMimeType: 'image/jpeg',
+      negativePrompt: 'text, letters, words, typography, captions, watermarks, signatures, numbers',
+    },
+  });
+
+  const imageBytes = response.generatedImages[0].image.imageBytes;
+  const filename = `gen-${uuidv4()}.jpg`;
+  fs.writeFileSync(path.join(UPLOADS_DIR, filename), Buffer.from(imageBytes, 'base64'));
+  return `/uploads/${filename}`;
+}
+
+module.exports = { generateBookText, generateFeedback, generateRegenDescription, generateImage };

@@ -1,0 +1,38 @@
+<div class="flex-1 bg-cream border-[1.5px] border-parchment-deep rounded-md flex flex-col overflow-hidden min-h-0 transition-colors duration-200">
+  <div class="px-[.7rem] py-[.45rem] bg-parchment border-b border-parchment-deep flex items-center justify-between shrink-0">
+    <span class="font-cinzel text-[.62rem] tracking-widest text-ink-muted">Page {{pageNum spreadIdx side}}</span>
+    <div class="flex gap-1">
+      <button class="bg-transparent border border-parchment-deep text-ink-muted text-[.62rem] px-1.75 py-0.5 rounded-sm cursor-pointer font-lora transition-all duration-150 whitespace-nowrap hover:border-accent-gold hover:text-ink" data-edit-side="{{side}}">✎ Edit Text</button>
+      <button class="bg-transparent border border-parchment-deep text-ink-muted text-[.62rem] px-1.75 py-0.5 rounded-sm cursor-pointer font-lora transition-all duration-150 whitespace-nowrap hover:border-accent-gold hover:text-ink"
+              hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side={{side}}"
+              hx-target="#modal-container"
+              hx-swap="innerHTML">↺ New Image</button>
+    </div>
+  </div>
+  <div class="pv-illus {{#if (eq book.size 'landscape')}}aspect-video w-full min-h-50{{else}}flex-1 min-h-100{{/if}} bg-page-bg flex items-center justify-center text-[3.5rem] relative overflow-hidden">
+    {{#if image}}<img src="{{image}}" alt="" class="w-full h-full object-cover absolute inset-0">{{else}}<span>{{emoji}}</span>{{/if}}
+    <div class="pv-ov absolute inset-0 bg-transparent flex items-center justify-center opacity-0 transition-all duration-200">
+      <button class="bg-parchment/90 text-ink border-none font-lora text-[.7rem] px-2.75 py-1.25 rounded-sm cursor-pointer hover:bg-parchment"
+              hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side={{side}}"
+              hx-target="#modal-container"
+              hx-swap="innerHTML">↺ Regenerate</button>
+    </div>
+  </div>
+  <div class="px-[.9rem] py-[.7rem] border-t border-parchment-deep bg-cream shrink-0">
+    <div id="pvtd-{{side}}" class="font-lora text-[.85rem] leading-[1.65] text-ink min-h-9">
+      {{#if text}}{{text}}{{else}}<span class="italic text-ink-muted">Empty</span>{{/if}}
+    </div>
+    <div id="pvte-{{side}}" class="hidden">
+      <form hx-put="/admin/books/{{book.id}}/spread/{{spreadIdx}}/text"
+            hx-target="#spread-area"
+            hx-swap="innerHTML">
+        <input type="hidden" name="side" value="{{side}}">
+        <textarea class="w-full font-lora text-[.85rem] leading-[1.65] text-ink border border-accent-gold rounded-sm px-1.75 py-1.25 resize-none bg-cream outline-none min-h-13.5 block" id="pvta-{{side}}" name="text">{{text}}</textarea>
+        <div class="flex gap-[.35rem] mt-[.35rem] justify-end">
+          <button type="button" class="btn btn-ghost btn-sm" data-cancel-side="{{side}}">Cancel</button>
+          <button type="submit" class="btn btn-gold btn-sm">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -104,11 +104,6 @@ async function runJob(jobId) {
   await sleep(400);
   job.steps[1] = 'done';
 
-  job.steps[2] = 'run';
-  await sleep(500);
-  job.steps[2] = 'done';
-
-  job.steps[3] = 'run';
   const spreadCount = Math.max(2, Math.ceil(job.filePaths.length / 2));
   const pages = aiPages && aiPages.length
     ? aiPages.map((p, i) => ({
@@ -130,6 +125,20 @@ async function runJob(jobId) {
         fb: [],
       }));
 
+  job.steps[2] = 'run';
+  await Promise.all(
+    pages.map(async (page) => {
+      const [leftUrl, rightUrl] = await Promise.all([
+        page.lt ? google.generateImage(job.title, page.lt, job.description, job.style, job.size).catch(() => null) : Promise.resolve(null),
+        page.rt ? google.generateImage(job.title, page.rt, job.description, job.style, job.size).catch(() => null) : Promise.resolve(null),
+      ]);
+      if (leftUrl) page.leftImage = leftUrl;
+      if (rightUrl) page.rightImage = rightUrl;
+    })
+  );
+  job.steps[2] = 'done';
+
+  job.steps[3] = 'run';
   const book = store.create({ title: job.title, age: job.age, style: job.style, size: job.size, status: 'draft', emoji: em[0], pages });
   job.steps[3] = 'done';
   job.status = 'done';
@@ -234,14 +243,12 @@ router.post('/books/:id/spread/:i/regen', async (req, res) => {
   const pageText = side === 'l' ? spread.lt : spread.rt;
 
   try {
-    const description = await google.generateRegenDescription(book.title, pageText, prompt, book.style);
-    const em = EMOJIS[book.style] || EMOJIS.watercolor;
-    const newEmoji = em[Math.floor(Math.random() * em.length)];
-    store.updateSpread(req.params.id, spreadIdx, side === 'l' ? { le: newEmoji } : { re: newEmoji });
+    const imageUrl = await google.generateImage(book.title, pageText, prompt, book.style, book.size);
+    store.updateSpread(req.params.id, spreadIdx, side === 'l' ? { leftImage: imageUrl } : { rightImage: imageUrl });
 
     res.setHeader('HX-Trigger', JSON.stringify({ showToast: 'Illustration updated!' }));
     const updated = store.getById(req.params.id);
-    res.render('partials/spread-editor', { layout: false, book: updated, spread: updated.pages[spreadIdx], spreadIdx, regenNote: description });
+    res.render('partials/spread-editor', { layout: false, book: updated, spread: updated.pages[spreadIdx], spreadIdx });
   } catch (e) {
     res.status(500).send(`<p style="color:red;padding:1rem">${e.message}</p>`);
   }
