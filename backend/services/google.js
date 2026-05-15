@@ -14,12 +14,13 @@ function getClient() {
   return new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
 }
 
-async function generateBookText(title, style, imagePaths = []) {
+async function generateBookText(title, style, imagePaths = [], description = '') {
   const ai = getClient();
   const styleName = STYLE_NAMES[style] || style;
   const spreadCount = Math.max(2, Math.ceil(Math.max(imagePaths.length, 1) / 2));
+  const descPart = description ? ` Visual theme: ${description}.` : '';
 
-  const instruction = `Picture book titled "${title}". Generate ${spreadCount} spreads with short, child-friendly sentences for ages 4–8. Style: ${styleName}. Respond ONLY as a JSON array:\n[{"leftText":"...","rightText":"..."},...]`;
+  const instruction = `Picture book titled "${title}".${descPart} Generate ${spreadCount} spreads with short, child-friendly sentences for ages 4–8. Style: ${styleName}. Respond ONLY as a JSON array:\n[{"leftText":"...","rightText":"..."},...]`;
 
   const parts = imagePaths.length > 0
     ? [

@@ -48,6 +48,7 @@ router.get('/books', (req, res) => {
 router.post('/books', upload.array('photos', 30), (req, res) => {
   const title = (req.body.title || '').trim();
   const { age, style } = req.body;
+  const description = (req.body.description || '').trim();
 
   if (!title) {
     res.setHeader('HX-Trigger', JSON.stringify({ showToast: 'Please enter a book title.' }));
@@ -67,6 +68,7 @@ router.post('/books', upload.array('photos', 30), (req, res) => {
     title,
     age: age || '4-6',
     style: style || 'watercolor',
+    description,
     filePaths: req.files.map(f => f.path),
     fileUrls: req.files.map(f => `/uploads/${f.filename}`),
   };
@@ -90,7 +92,7 @@ async function runJob(jobId) {
   job.steps[0] = 'run';
   let aiPages = null;
   try {
-    aiPages = await google.generateBookText(job.title, job.style, job.filePaths);
+    aiPages = await google.generateBookText(job.title, job.style, job.filePaths, job.description);
   } catch (e) {
     console.warn('Claude generation failed, using fallback:', e.message);
   }
