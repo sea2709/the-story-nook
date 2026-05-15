@@ -1,7 +1,7 @@
 const { GoogleGenAI } = require('@google/genai');
 const fs = require('fs');
 
-const MODEL = 'gemini-2.0-flash';
+const MODEL = 'gemini-3.1-pro-preview';
 
 const STYLE_NAMES = {
   watercolor: 'soft watercolor painting',
@@ -35,7 +35,7 @@ async function generateBookText(title, style, imagePaths = []) {
   const response = await ai.models.generateContent({
     model: MODEL,
     contents: parts,
-    config: { maxOutputTokens: 1200, responseMimeType: 'application/json' },
+    config: { responseMimeType: 'application/json' },
   });
 
   return JSON.parse(response.text);
@@ -47,7 +47,6 @@ async function generateFeedback(bookTitle, spread, feedback, style) {
   const response = await ai.models.generateContent({
     model: MODEL,
     contents: prompt,
-    config: { maxOutputTokens: 200 },
   });
   return response.text.trim() || 'Noted.';
 }
