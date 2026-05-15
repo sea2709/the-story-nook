@@ -22,9 +22,9 @@
     </div>
     <div class="px-[.9rem] py-[.7rem] border-t border-parchment-deep bg-cream shrink-0">
       <div id="pvtd-l" class="font-lora text-[.85rem] leading-[1.65] text-ink min-h-9">
-        {{#if spread.lt}}{{spread.lt}}{{else}}<span style="font-style:italic;color:var(--ink-muted)">Empty</span>{{/if}}
+        {{#if spread.lt}}{{spread.lt}}{{else}}<span class="italic text-ink-muted">Empty</span>{{/if}}
       </div>
-      <div id="pvte-l" style="display:none">
+      <div id="pvte-l" class="hidden">
         <form hx-put="/admin/books/{{book.id}}/spread/{{spreadIdx}}/text"
               hx-target="#spread-area"
               hx-swap="innerHTML">
@@ -62,9 +62,9 @@
     </div>
     <div class="px-[.9rem] py-[.7rem] border-t border-parchment-deep bg-cream shrink-0">
       <div id="pvtd-r" class="font-lora text-[.85rem] leading-[1.65] text-ink min-h-9">
-        {{#if spread.rt}}{{spread.rt}}{{else}}<span style="font-style:italic;color:var(--ink-muted)">Empty</span>{{/if}}
+        {{#if spread.rt}}{{spread.rt}}{{else}}<span class="italic text-ink-muted">Empty</span>{{/if}}
       </div>
-      <div id="pvte-r" style="display:none">
+      <div id="pvte-r" class="hidden">
         <form hx-put="/admin/books/{{book.id}}/spread/{{spreadIdx}}/text"
               hx-target="#spread-area"
               hx-swap="innerHTML">
@@ -80,5 +80,5 @@
   </div>
 </div>
 {{#if regenNote}}
-<p style="font-style:italic;font-size:.78rem;color:var(--ink-muted);padding:.4rem 1.6rem">✦ {{regenNote}}</p>
+<p class="italic text-[.78rem] text-ink-muted px-[1.6rem] py-[.4rem]">✦ {{regenNote}}</p>
 {{/if}}

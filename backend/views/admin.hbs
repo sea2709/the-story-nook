@@ -47,7 +47,7 @@
         </div>
 
         <div class="px-[1.3rem] py-[1.2rem] border-b border-accent-gold/25">
-          <button type="submit" class="btn btn-gold" style="width:100%" id="proc-btn">✦ Analyze &amp; Generate</button>
+          <button type="submit" class="btn btn-gold w-full" id="proc-btn">✦ Analyze &amp; Generate</button>
           <div id="steps-container"></div>
         </div>
 
@@ -71,8 +71,8 @@
             {{> preview-panel book=activeBook spreadIdx=spreadIdx}}
           {{else}}
             <div class="text-center p-[5rem_2rem] text-ink-muted italic">
-              <p style="font-size:1.05rem">No book loaded for preview.</p>
-              <p style="margin-top:.5rem;font-size:.88rem">Generate a new book or select one from <em>All Books</em>.</p>
+              <p class="text-[1.05rem]">No book loaded for preview.</p>
+              <p class="mt-2 text-[.88rem]">Generate a new book or select one from <em>All Books</em>.</p>
             </div>
           {{/if}}
         </div>
@@ -80,8 +80,8 @@
 
       <!-- All Books tab -->
       <div class="tc flex-1 p-[1.8rem_2.2rem] overflow-y-auto" id="tc-mg">
-        <h2 style="font-family:'Cinzel',serif;font-size:.95rem;letter-spacing:.1em;color:var(--ink);margin-bottom:.35rem">All Books</h2>
-        <p style="font-style:italic;color:var(--ink-muted);font-size:.83rem;margin-bottom:1.3rem">Click to preview &amp; edit. Published books appear in the library.</p>
+        <h2 class="font-cinzel text-[.95rem] tracking-widest text-ink mb-[.35rem]">All Books</h2>
+        <p class="italic text-ink-muted text-[.83rem] mb-[1.3rem]">Click to preview &amp; edit. Published books appear in the library.</p>
         <div id="book-list">
           {{> book-list books=books}}
         </div>

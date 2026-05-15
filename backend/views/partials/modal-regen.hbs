@@ -2,7 +2,7 @@
   <div class="bg-cream border-[1.5px] border-parchment-deep rounded-md w-[min(500px,92vw)] max-h-[85vh] overflow-y-auto p-[1.8rem] relative shadow-[0_20px_60px_rgba(0,0,0,.4)]">
     <button class="absolute top-[.9rem] right-[1.1rem] bg-transparent border-none text-[1.1rem] text-ink-muted cursor-pointer leading-none hover:text-accent-red" onclick="document.getElementById('m-regen').classList.remove('open')">✕</button>
     <div class="font-cinzel text-[.95rem] tracking-[.08em] text-ink mb-[1.1rem] pb-[.7rem] border-b border-parchment-deep">↺ Regenerate Illustration</div>
-    <p style="font-size:.83rem;color:var(--ink-muted);margin-bottom:.9rem">Describe what the new illustration should show. Story text and style will be preserved.</p>
+    <p class="text-[.83rem] text-ink-muted mb-[.9rem]">Describe what the new illustration should show. Story text and style will be preserved.</p>
     <form hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen"
           hx-target="#spread-area"
           hx-swap="innerHTML"

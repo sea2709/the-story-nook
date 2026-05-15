@@ -21,15 +21,25 @@
 }
 
 /* ── Base ─────────────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/*
+ * Reset and body styles go in @layer base so @layer utilities (Tailwind's
+ * padding-inline, padding-block, margin-inline, etc.) can override them.
+ * Unlayered rules beat all @layer rules regardless of specificity, so a
+ * bare `* { padding: 0 }` outside a layer would silently swallow utility
+ * classes like px-4, py-2, etc.
+ */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  font-family: var(--font-lora);
-  background-color: var(--color-parchment);
-  color: var(--color-ink);
-  min-height: 100vh;
+  body {
+    font-family: var(--font-lora);
+    background-color: var(--color-parchment);
+    color: var(--color-ink);
+    min-height: 100vh;
+  }
 }
 
+/* Scrollbar — vendor-prefixed, no conflict with Tailwind utilities */
 ::-webkit-scrollbar       { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--color-parchment-deep); border-radius: 2px; }
