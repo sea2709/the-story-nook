@@ -26,8 +26,14 @@
             <option value="4-6" selected class="bg-[#2c1f14] text-parchment">Ages 4–6</option>
             <option value="6-8" class="bg-[#2c1f14] text-parchment">Ages 6–8</option>
           </select>
+          <label class="block text-[.72rem] tracking-[.08em] uppercase text-parchment/50 mb-[.35rem] mt-[.85rem]">Page Size</label>
+          <input type="hidden" name="size" id="size-input" value="portrait">
+          <div class="grid grid-cols-2 gap-1.75">
+            <div class="sopt-sz border-[1.5px] border-accent-gold/25 rounded p-[9px_7px] cursor-pointer text-center transition-all duration-200 bg-parchment/4 hover:border-accent-gold/55 sel" onclick="pickSize(this,'portrait')"><span class="text-[1.4rem] block mb-[.2rem]">▯</span><div class="text-[.72rem] text-parchment/80">Portrait</div><div class="text-[.62rem] text-parchment/40 italic">Tall pages</div></div>
+            <div class="sopt-sz border-[1.5px] border-accent-gold/25 rounded p-[9px_7px] cursor-pointer text-center transition-all duration-200 bg-parchment/4 hover:border-accent-gold/55" onclick="pickSize(this,'landscape')"><span class="text-[1.4rem] block mb-[.2rem]">▭</span><div class="text-[.72rem] text-parchment/80">Landscape</div><div class="text-[.62rem] text-parchment/40 italic">Wide pages</div></div>
+          </div>
           <label class="block text-[.72rem] tracking-[.08em] uppercase text-parchment/50 mb-[.35rem] mt-[.85rem]">Description</label>
-          <textarea class="w-full font-lora text-[.87rem] px-2.75 py-2 border border-accent-gold/25 rounded-sm bg-parchment/7 text-parchment outline-none transition-colors duration-200 focus:border-accent-gold resize-y min-h-20" name="description" placeholder="e.g. A curious fox explores an enchanted forest at dusk, soft glowing mushrooms, cozy and magical"></textarea>
+          <textarea class="w-full font-lora text-[.87rem] px-2.75 py-2 border border-accent-gold/25 rounded-sm bg-parchment/7 text-parchment outline-none transition-colors duration-200 focus:border-accent-gold resize-y min-h-60" name="description" placeholder="e.g. A curious fox explores an enchanted forest at dusk, soft glowing mushrooms, cozy and magical"></textarea>
           <label class="block text-[.72rem] tracking-[.08em] uppercase text-parchment/50 mb-[.35rem] mt-[.85rem]">Upload Page Photos</label>
           <div class="uz border-[1.5px] border-dashed border-accent-gold/40 rounded p-[1.4rem_1rem] text-center cursor-pointer transition-all duration-200 relative bg-parchment/[.03] hover:border-accent-gold hover:bg-accent-gold/[.07]" id="uz">
             <input type="file" name="photos" multiple accept="image/*" id="photo-input">
@@ -142,5 +148,11 @@
     document.querySelectorAll('.sopt').forEach(o => o.classList.remove('sel'));
     el.classList.add('sel');
     document.getElementById('style-input').value = val;
+  }
+
+  function pickSize(el, val) {
+    document.querySelectorAll('.sopt-sz').forEach(o => o.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('size-input').value = val;
   }
 </script>

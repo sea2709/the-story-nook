@@ -49,6 +49,7 @@ router.post('/books', upload.array('photos', 30), (req, res) => {
   const title = (req.body.title || '').trim();
   const { age, style } = req.body;
   const description = (req.body.description || '').trim();
+  const size = req.body.size === 'landscape' ? 'landscape' : 'portrait';
 
   if (!title) {
     res.setHeader('HX-Trigger', JSON.stringify({ showToast: 'Please enter a book title.' }));
@@ -68,6 +69,7 @@ router.post('/books', upload.array('photos', 30), (req, res) => {
     title,
     age: age || '4-6',
     style: style || 'watercolor',
+    size,
     description,
     filePaths: req.files.map(f => f.path),
     fileUrls: req.files.map(f => `/uploads/${f.filename}`),
@@ -92,7 +94,7 @@ async function runJob(jobId) {
   job.steps[0] = 'run';
   let aiPages = null;
   try {
-    aiPages = await google.generateBookText(job.title, job.style, job.filePaths, job.description);
+    aiPages = await google.generateBookText(job.title, job.style, job.filePaths, job.size);
   } catch (e) {
     console.warn('Claude generation failed, using fallback:', e.message);
   }
@@ -128,7 +130,7 @@ async function runJob(jobId) {
         fb: [],
       }));
 
-  const book = store.create({ title: job.title, age: job.age, style: job.style, status: 'draft', emoji: em[0], pages });
+  const book = store.create({ title: job.title, age: job.age, style: job.style, size: job.size, status: 'draft', emoji: em[0], pages });
   job.steps[3] = 'done';
   job.status = 'done';
   job.bookId = book.id;

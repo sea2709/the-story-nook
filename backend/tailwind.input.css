@@ -74,7 +74,8 @@
 .tc       { display: none; }
 .tc.act   { display: flex; flex-direction: column; }
 
-.sopt.sel { border-color: var(--color-accent-gold); background-color: color-mix(in oklch, var(--color-accent-gold) 10%, transparent); }
+.sopt.sel,
+.sopt-sz.sel { border-color: var(--color-accent-gold); background-color: color-mix(in oklch, var(--color-accent-gold) 10%, transparent); }
 
 .sic.done { color: #66bb6a; }
 .sic.run  { color: var(--color-accent-gold); animation: pulse-step 1s ease-in-out infinite; }

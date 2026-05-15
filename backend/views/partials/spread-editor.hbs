@@ -11,7 +11,7 @@
                 hx-swap="innerHTML">↺ New Image</button>
       </div>
     </div>
-    <div class="pv-illus flex-1 bg-page-bg flex items-center justify-center text-[3.5rem] relative overflow-hidden min-h-20">
+    <div class="pv-illus {{#if (eq book.size 'landscape')}}aspect-video w-full{{else}}flex-1 min-h-20{{/if}} bg-page-bg flex items-center justify-center text-[3.5rem] relative overflow-hidden">
       {{#if spread.leftImage}}<img src="{{spread.leftImage}}" alt="" class="w-full h-full object-cover absolute inset-0">{{else}}<span>{{spread.le}}</span>{{/if}}
       <div class="pv-ov absolute inset-0 bg-transparent flex items-center justify-center opacity-0 transition-all duration-200">
         <button class="bg-parchment/90 text-ink border-none font-lora text-[.7rem] px-2.75 py-1.25 rounded-sm cursor-pointer hover:bg-parchment"
@@ -51,7 +51,7 @@
                 hx-swap="innerHTML">↺ New Image</button>
       </div>
     </div>
-    <div class="pv-illus flex-1 bg-page-bg flex items-center justify-center text-[3.5rem] relative overflow-hidden min-h-20">
+    <div class="pv-illus {{#if (eq book.size 'landscape')}}aspect-video w-full{{else}}flex-1 min-h-20{{/if}} bg-page-bg flex items-center justify-center text-[3.5rem] relative overflow-hidden">
       {{#if spread.rightImage}}<img src="{{spread.rightImage}}" alt="" class="w-full h-full object-cover absolute inset-0">{{else}}<span>{{spread.re}}</span>{{/if}}
       <div class="pv-ov absolute inset-0 bg-transparent flex items-center justify-center opacity-0 transition-all duration-200">
         <button class="bg-parchment/90 text-ink border-none font-lora text-[.7rem] px-2.75 py-1.25 rounded-sm cursor-pointer hover:bg-parchment"

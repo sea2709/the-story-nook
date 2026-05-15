@@ -14,13 +14,13 @@ function getClient() {
   return new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
 }
 
-async function generateBookText(title, style, imagePaths = [], description = '') {
+async function generateBookText(title, style, imagePaths = [], size = 'portrait') {
   const ai = getClient();
   const styleName = STYLE_NAMES[style] || style;
   const spreadCount = Math.max(2, Math.ceil(Math.max(imagePaths.length, 1) / 2));
-  const descPart = description ? ` Visual theme: ${description}.` : '';
+  const sizePart = size === 'landscape' ? ' Illustrations are wide landscape format (16:9).' : ' Illustrations are portrait format (3:4).';
 
-  const instruction = `Picture book titled "${title}".${descPart} Generate ${spreadCount} spreads with short, child-friendly sentences for ages 4–8. Style: ${styleName}. Respond ONLY as a JSON array:\n[{"leftText":"...","rightText":"..."},...]`;
+  const instruction = `Picture book titled "${title}".${sizePart} Generate ${spreadCount} spreads with short, child-friendly sentences for ages 4–8. Style: ${styleName}. Respond ONLY as a JSON array:\n[{"leftText":"...","rightText":"..."},...]`;
 
   const parts = imagePaths.length > 0
     ? [
