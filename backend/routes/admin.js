@@ -126,16 +126,16 @@ async function runJob(jobId) {
       }));
 
   job.steps[2] = 'run';
-  await Promise.all(
-    pages.map(async (page) => {
-      const [leftUrl, rightUrl] = await Promise.all([
-        page.lt ? google.generateImage(job.title, page.lt, job.description, job.style, job.size).catch(() => null) : Promise.resolve(null),
-        page.rt ? google.generateImage(job.title, page.rt, job.description, job.style, job.size).catch(() => null) : Promise.resolve(null),
-      ]);
-      if (leftUrl) page.leftImage = leftUrl;
-      if (rightUrl) page.rightImage = rightUrl;
-    })
-  );
+  for (const page of pages) {
+    if (page.lt) {
+      try { page.leftGenImage = await google.generateImage(job.title, page.lt, job.description, job.style, job.size); }
+      catch (e) { console.warn('Left image generation failed:', e.message); }
+    }
+    if (page.rt) {
+      try { page.rightGenImage = await google.generateImage(job.title, page.rt, job.description, job.style, job.size); }
+      catch (e) { console.warn('Right image generation failed:', e.message); }
+    }
+  }
   job.steps[2] = 'done';
 
   job.steps[3] = 'run';
@@ -244,7 +244,7 @@ router.post('/books/:id/spread/:i/regen', async (req, res) => {
 
   try {
     const imageUrl = await google.generateImage(book.title, pageText, prompt, book.style, book.size);
-    store.updateSpread(req.params.id, spreadIdx, side === 'l' ? { leftImage: imageUrl } : { rightImage: imageUrl });
+    store.updateSpread(req.params.id, spreadIdx, side === 'l' ? { leftGenImage: imageUrl } : { rightGenImage: imageUrl });
 
     res.setHeader('HX-Trigger', JSON.stringify({ showToast: 'Illustration updated!' }));
     const updated = store.getById(req.params.id);
