@@ -6,6 +6,8 @@
     <form hx-post="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen"
           hx-target="#spread-area"
           hx-swap="innerHTML"
+          hx-indicator="#regen-indicator"
+          hx-disabled-elt="find button[type='submit']"
           hx-on:htmx:after-swap="document.getElementById('m-regen').classList.remove('open')">
       <input type="hidden" name="side" value="{{side}}">
       <label class="block text-[.76rem] tracking-[.07em] uppercase text-ink-muted mb-[.35rem] mt-[.9rem] first:mt-0">Your prompt</label>
@@ -14,6 +16,10 @@
       <div class="flex gap-[.65rem] justify-end mt-[1.4rem] pt-[.9rem] border-t border-parchment-deep">
         <button type="button" class="btn btn-ghost" onclick="document.getElementById('m-regen').classList.remove('open')">Cancel</button>
         <button type="submit" class="btn btn-gold">✦ Generate</button>
+      </div>
+      <div id="regen-indicator" class="htmx-indicator flex items-center justify-center gap-2.5 pt-3 text-ink-muted font-lora italic text-[.82rem]">
+        <span class="regen-spinner"></span>
+        Generating illustration…
       </div>
     </form>
   </div>

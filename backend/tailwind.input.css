@@ -46,6 +46,7 @@
 
 /* ── Animations ───────────────────────────────────────────────────────────── */
 @keyframes pulse-step { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+@keyframes spin       { to { transform: rotate(360deg); } }
 
 @layer components {
   /* ── Buttons (shared across all templates) ────────────────────────────── */
@@ -59,6 +60,15 @@
   .plabel::after             { content: ''; @apply flex-1 h-px bg-accent-gold/25; }
   .uz input                  { @apply absolute inset-0 opacity-0 cursor-pointer w-full h-full; }
   .pv-illus:hover .pv-ov     { @apply bg-black/35 opacity-100; }
+
+  .regen-spinner {
+    display: inline-block;
+    width: 1rem; height: 1rem;
+    border: 2px solid var(--color-parchment-deep);
+    border-top-color: var(--color-accent-gold);
+    border-radius: 50%;
+    animation: spin .75s linear infinite;
+  }
 }
 
 /*

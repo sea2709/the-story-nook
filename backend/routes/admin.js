@@ -247,15 +247,27 @@ router.post('/books/:id/spread/:i/regen', async (req, res) => {
   const spread = book.pages[spreadIdx];
   const pageText = side === 'l' ? spread.lt : spread.rt;
 
+  // Collect generated images from all pages before this one, plus the left side
+  // of the current spread when regenerating the right side, to anchor visual style.
+  const prevImagePaths = [];
+  for (let i = 0; i < spreadIdx; i++) {
+    const p = book.pages[i];
+    if (p.leftGenImage)  prevImagePaths.push(path.join(__dirname, '../public', p.leftGenImage));
+    if (p.rightGenImage) prevImagePaths.push(path.join(__dirname, '../public', p.rightGenImage));
+  }
+  if (side === 'r' && spread.leftGenImage) {
+    prevImagePaths.push(path.join(__dirname, '../public', spread.leftGenImage));
+  }
+
   try {
-    const imageUrl = await google.generateImage(book.title, pageText, prompt, book.style, book.size);
+    const imageUrl = await google.generateImage(book.title, pageText, prompt, book.style, book.size, prevImagePaths);
     store.updateSpread(req.params.id, spreadIdx, side === 'l' ? { leftGenImage: imageUrl } : { rightGenImage: imageUrl });
 
     res.setHeader('HX-Trigger', JSON.stringify({ showToast: 'Illustration updated!' }));
     const updated = store.getById(req.params.id);
     res.render('partials/spread-editor', { layout: false, book: updated, spread: updated.pages[spreadIdx], spreadIdx });
   } catch (e) {
-    res.status(500).send(`<p style="color:red;padding:1rem">${e.message}</p>`);
+    res.status(500).send(`<p class="text-red-600 p-4 font-lora text-sm">${e.message}</p>`);
   }
 });
 
