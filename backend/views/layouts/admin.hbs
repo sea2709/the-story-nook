@@ -59,6 +59,18 @@
         document.getElementById('pvte-' + s).style.display = 'none';
         return;
       }
+      // Toggle generated ↔ original upload image
+      const toggleBtn = e.target.closest('[data-toggle-side]');
+      if (toggleBtn) {
+        const s = toggleBtn.dataset.toggleSide;
+        const gen  = document.getElementById('pv-img-'    + s);
+        const orig = document.getElementById('pv-orig-'   + s);
+        const showingOrig = !orig.classList.contains('hidden');
+        orig.classList.toggle('hidden',  showingOrig);
+        gen.classList.toggle('hidden',  !showingOrig);
+        toggleBtn.textContent = showingOrig ? '📷 Original' : '✨ Generated';
+        return;
+      }
       // Close modal on backdrop click
       if (e.target.classList.contains('mbk')) e.target.classList.remove('open');
     });

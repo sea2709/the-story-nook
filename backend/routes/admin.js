@@ -126,14 +126,19 @@ async function runJob(jobId) {
       }));
 
   job.steps[2] = 'run';
+  const prevImagePaths = [];
   for (const page of pages) {
     if (page.lt) {
-      try { page.leftGenImage = await google.generateImage(job.title, page.lt, job.description, job.style, job.size); }
-      catch (e) { console.warn('Left image generation failed:', e.message); }
+      try {
+        page.leftGenImage = await google.generateImage(job.title, page.lt, job.description, job.style, job.size, prevImagePaths);
+        prevImagePaths.push(path.join(__dirname, '../public', page.leftGenImage));
+      } catch (e) { console.warn('Left image generation failed:', e.message); }
     }
     if (page.rt) {
-      try { page.rightGenImage = await google.generateImage(job.title, page.rt, job.description, job.style, job.size); }
-      catch (e) { console.warn('Right image generation failed:', e.message); }
+      try {
+        page.rightGenImage = await google.generateImage(job.title, page.rt, job.description, job.style, job.size, prevImagePaths);
+        prevImagePaths.push(path.join(__dirname, '../public', page.rightGenImage));
+      } catch (e) { console.warn('Right image generation failed:', e.message); }
     }
   }
   job.steps[2] = 'done';

@@ -5,7 +5,8 @@ const { v4: uuidv4 } = require('uuid');
 
 const UPLOADS_DIR = path.join(__dirname, '../public/uploads');
 
-const MODEL = 'gemini-3.1-pro-preview';
+const MODEL       = 'gemini-3.1-pro-preview';
+const IMAGE_MODEL = 'gemini-3.1-flash-image-preview';
 
 const STYLE_NAMES = {
   watercolor: 'soft watercolor painting',
@@ -66,27 +67,38 @@ async function generateRegenDescription(bookTitle, pageText, prompt, style) {
   return response.text.trim() || 'New illustration applied.';
 }
 
-async function generateImage(bookTitle, pageText, description, style, size) {
-
+async function generateImage(bookTitle, pageText, description, style, size, prevImagePaths = []) {
   const styleName = STYLE_NAMES[style] || style;
-  const aspectRatio = size === 'landscape' ? '16:9' : '3:4';
+  const sizePart = size === 'landscape' ? 'wide landscape (16:9)' : 'portrait (3:4)';
 
-  const prompt = [
+  const textPrompt = [
     description ? `Theme: ${description}. ` : '',
-    `Children's picture book illustration for "${bookTitle}". `,
-    `Scene: ${pageText}. `,
-    `Art style: ${styleName}, warm and child-friendly. No text, letters, words, or numbers in the image.`,
+    `Generate a children's picture book illustration for "${bookTitle}". `,
+    prevImagePaths.length > 0 ? 'Maintain consistent characters, color palette, and setting from the reference images above. ' : '',
+    `Current scene: ${pageText}. `,
+    `Format: ${sizePart}. Art style: ${styleName}, warm and child-friendly. No text, letters, words, or numbers in the image.`,
   ].join('');
 
-  const response = await ai.models.generateImages({
-    model: 'imagen-4.0-generate-001',
-    prompt,
-    config: { numberOfImages: 1, aspectRatio, outputMimeType: 'image/jpeg' },
+  const contents = [];
+  if (prevImagePaths.length > 0) {
+    contents.push({ text: 'Reference images from previous pages of this story:' });
+    for (const imgPath of prevImagePaths.slice(-2)) {
+      contents.push({ inlineData: { mimeType: 'image/jpeg', data: fs.readFileSync(imgPath).toString('base64') } });
+    }
+  }
+  contents.push({ text: textPrompt });
+
+  const response = await ai.models.generateContent({
+    model: IMAGE_MODEL,
+    contents,
+    config: { responseModalities: ['IMAGE'] },
   });
 
-  const imageBytes = response.generatedImages[0].image.imageBytes;
+  const imagePart = response.candidates[0].content.parts.find(p => p.inlineData);
+  if (!imagePart) throw new Error('No image returned by model');
+
   const filename = `gen-${uuidv4()}.jpg`;
-  fs.writeFileSync(path.join(UPLOADS_DIR, filename), Buffer.from(imageBytes, 'base64'));
+  fs.writeFileSync(path.join(UPLOADS_DIR, filename), Buffer.from(imagePart.inlineData.data, 'base64'));
   return `/uploads/${filename}`;
 }
 

@@ -1,6 +1,6 @@
 <div class="flex gap-[1.2rem] p-[1.2rem_1.6rem] flex-1 min-h-0" id="pv-spread">
-  {{> page-card book=book spreadIdx=spreadIdx side="l" image=(or spread.leftGenImage spread.leftImage) emoji=spread.le text=spread.lt}}
-  {{> page-card book=book spreadIdx=spreadIdx side="r" image=(or spread.rightGenImage spread.rightImage) emoji=spread.re text=spread.rt}}
+  {{> page-card book=book spreadIdx=spreadIdx side="l" image=spread.leftGenImage originalUploadImage=spread.leftImage emoji=spread.le text=spread.lt}}
+  {{> page-card book=book spreadIdx=spreadIdx side="r" image=spread.rightGenImage originalUploadImage=spread.rightImage emoji=spread.re text=spread.rt}}
 </div>
 {{#if regenNote}}
 <p class="italic text-[.78rem] text-ink-muted px-[1.6rem] py-[.4rem]">✦ {{regenNote}}</p>

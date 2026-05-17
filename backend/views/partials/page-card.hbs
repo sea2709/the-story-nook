@@ -3,20 +3,38 @@
     <span class="font-cinzel text-[.62rem] tracking-widest text-ink-muted">Page {{pageNum spreadIdx side}}</span>
     <div class="flex gap-1">
       <button class="bg-transparent border border-parchment-deep text-ink-muted text-[.62rem] px-1.75 py-0.5 rounded-sm cursor-pointer font-lora transition-all duration-150 whitespace-nowrap hover:border-accent-gold hover:text-ink" data-edit-side="{{side}}">✎ Edit Text</button>
+      {{#if image}}{{#if originalUploadImage}}
+      <button class="bg-transparent border border-parchment-deep text-ink-muted text-[.62rem] px-1.75 py-0.5 rounded-sm cursor-pointer font-lora transition-all duration-150 whitespace-nowrap hover:border-accent-gold hover:text-ink" data-toggle-side="{{side}}" id="pv-toggle-{{side}}">📷 Original</button>
+      {{/if}}{{/if}}
       <button class="bg-transparent border border-parchment-deep text-ink-muted text-[.62rem] px-1.75 py-0.5 rounded-sm cursor-pointer font-lora transition-all duration-150 whitespace-nowrap hover:border-accent-gold hover:text-ink"
               hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side={{side}}"
               hx-target="#modal-container"
               hx-swap="innerHTML">↺ New Image</button>
     </div>
   </div>
-  <div class="pv-illus {{#if (eq book.size 'landscape')}}aspect-video w-full min-h-50{{else}}flex-1 min-h-100{{/if}} bg-page-bg flex items-center justify-center text-[3.5rem] relative overflow-hidden">
-    {{#if image}}<img src="{{image}}" alt="" class="w-full h-full object-cover absolute inset-0">{{else}}<span>{{emoji}}</span>{{/if}}
-    <div class="pv-ov absolute inset-0 bg-transparent flex items-center justify-center opacity-0 transition-all duration-200">
-      <button class="bg-parchment/90 text-ink border-none font-lora text-[.7rem] px-2.75 py-1.25 rounded-sm cursor-pointer hover:bg-parchment"
+  <div class="pv-illus {{#if (eq book.size 'landscape')}}aspect-video w-full min-h-50{{else}}flex-1 min-h-200{{/if}} bg-page-bg flex items-center justify-center text-[3.5rem] relative overflow-hidden">
+    {{#if image}}
+      <img id="pv-img-{{side}}" src="{{image}}" alt="" class="w-full h-full object-cover absolute inset-0">
+      {{#if originalUploadImage}}
+        <img id="pv-orig-{{side}}" src="{{originalUploadImage}}" alt="" class="w-full h-full object-cover absolute inset-0 hidden">
+      {{/if}}
+      <div class="pv-ov absolute inset-0 bg-transparent flex items-center justify-center opacity-0 transition-all duration-200">
+        <button class="bg-parchment/90 text-ink border-none font-lora text-[.7rem] px-2.75 py-1.25 rounded-sm cursor-pointer hover:bg-parchment"
+                hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side={{side}}"
+                hx-target="#modal-container"
+                hx-swap="innerHTML">↺ Regenerate</button>
+      </div>
+    {{else}}
+      {{#if originalUploadImage}}
+        <img src="{{originalUploadImage}}" alt="" class="w-full h-full object-cover absolute inset-0">
+      {{else}}
+        <span>{{emoji}}</span>
+      {{/if}}
+      <button class="absolute bottom-3 bg-parchment/90 text-ink border-none font-lora text-[.7rem] px-2.75 py-1.25 rounded-sm cursor-pointer hover:bg-parchment"
               hx-get="/admin/books/{{book.id}}/spread/{{spreadIdx}}/regen-form?side={{side}}"
               hx-target="#modal-container"
-              hx-swap="innerHTML">↺ Regenerate</button>
-    </div>
+              hx-swap="innerHTML">↺ Generate Image</button>
+    {{/if}}
   </div>
   <div class="px-[.9rem] py-[.7rem] border-t border-parchment-deep bg-cream shrink-0">
     <div id="pvtd-{{side}}" class="font-lora text-[.85rem] leading-[1.65] text-ink min-h-9">
